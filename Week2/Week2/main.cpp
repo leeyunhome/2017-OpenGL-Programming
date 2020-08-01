@@ -42,7 +42,9 @@ int main()
 	glViewport(0, 0, width, height);
 	// your frame buffer is two dimensional array x-, y-
 	// your frame buffer is three dimensional array x-, y-, d-
-	glOrtho(0, 1, 0, 1, -1.0, 1.0);
+	const float aspect_ratio = (float)width / (float)height; // 1.66, 1.9 TV display
+	glOrtho(-1, 1, -1 / aspect_ratio, 1 / aspect_ratio, -1.0, 1.0);
+
 	// You are going to study later in Viewing class.
 
 	/* Loop until the user closes the window */
@@ -52,16 +54,32 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// TODO: draw here
-		glBegin(GL_TRIANGLES);
-		glColor3f(1.0, 0.0, 0.0);
-		glVertex3f(0.0, 0.0, 0.0);	// == glVertex2f(0.0, 0.0); in 2D drawing
-		
-		glColor3f(0.0, 1.0, 0.0);
-		glVertex3f(0.5, 0.0, 0.0);	// == glVertex2f(0.0, 0.0); in 2D drawing
-		
+		glBegin(GL_TRIANGLE_FAN);
 		glColor3f(0.0, 0.0, 1.0);
-		glVertex3f(0.25, 0.5, 0.0);	// == glVertex2f(0.0, 0.0); in 2D drawing
+		//glVertex3f(0.0, 0.0, 0.0);	// == glVertex2f(0.0, 0.0); in 2D drawing
+		//
+		//glColor3f(0.0, 1.0, 0.0);
+		//glVertex3f(0.5, 0.0, 0.0);	// == glVertex2f(0.0, 0.0); in 2D drawing
+		//
+		//glColor3f(0.0, 0.0, 1.0);
+		//glVertex3f(0.25, 0.5, 0.0);	// == glVertex2f(0.0, 0.0); in 2D drawing
+		
+		// center of polygonized circle
+		glVertex2f(0.0, 0.0);
 
+		const int num_triangles = 1000;
+		const float dtheta = 2.0 * 3.141592 / (float)num_triangles;
+		const float radius = 0.5;
+
+		float theta = 0.0;
+		for (int i = 0; i <= num_triangles; i++, theta += dtheta)
+		//for (float theta = 0.0; theta < 2.0 * 3.141592; theta += dtheta)
+		{
+			const float x = radius * cos(theta);
+			const float y = radius * sin(theta);
+			glVertex2f(x, y);	// == glVertex2f(0.0, 0.0); in 2D drawing
+
+		}
 		glEnd();
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
