@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Polymorphism", "Polymorphis
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Implicit Surface", "Implicit Surface\Implicit Surface.vcxproj", "{06B5D780-B81D-4228-83D5-3F2022C6DF37}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Level set surface", "Level set surface\Level set surface.vcxproj", "{372C56C2-D48A-49A2-8D84-BB9764AAC912}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -81,6 +83,14 @@ Global
 		{06B5D780-B81D-4228-83D5-3F2022C6DF37}.Release|x64.Build.0 = Release|x64
 		{06B5D780-B81D-4228-83D5-3F2022C6DF37}.Release|x86.ActiveCfg = Release|Win32
 		{06B5D780-B81D-4228-83D5-3F2022C6DF37}.Release|x86.Build.0 = Release|Win32
+		{372C56C2-D48A-49A2-8D84-BB9764AAC912}.Debug|x64.ActiveCfg = Debug|x64
+		{372C56C2-D48A-49A2-8D84-BB9764AAC912}.Debug|x64.Build.0 = Debug|x64
+		{372C56C2-D48A-49A2-8D84-BB9764AAC912}.Debug|x86.ActiveCfg = Debug|Win32
+		{372C56C2-D48A-49A2-8D84-BB9764AAC912}.Debug|x86.Build.0 = Debug|Win32
+		{372C56C2-D48A-49A2-8D84-BB9764AAC912}.Release|x64.ActiveCfg = Release|x64
+		{372C56C2-D48A-49A2-8D84-BB9764AAC912}.Release|x64.Build.0 = Release|x64
+		{372C56C2-D48A-49A2-8D84-BB9764AAC912}.Release|x86.ActiveCfg = Release|Win32
+		{372C56C2-D48A-49A2-8D84-BB9764AAC912}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
