@@ -42,7 +42,7 @@ int main()
 	glViewport(0, 0, width, height);
 	// your frame buffer is two dimensional array x-, y-
 	// your frame buffer is three dimensional array x-, y-, d-
-	//glOrtho(0, 1, 0, 1, -1.0, 1.0);
+	glOrtho(0, 1, 0, 1, -1.0, 1.0);
 	// You are going to study later in Viewing class.
 
 	/* Loop until the user closes the window */
@@ -52,10 +52,14 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// TODO: draw here
-		glColor3f(1.0, 0.0, 0.0);
 		glBegin(GL_TRIANGLES);
+		glColor3f(1.0, 0.0, 0.0);
 		glVertex3f(0.0, 0.0, 0.0);	// == glVertex2f(0.0, 0.0); in 2D drawing
+		
+		glColor3f(0.0, 1.0, 0.0);
 		glVertex3f(0.5, 0.0, 0.0);	// == glVertex2f(0.0, 0.0); in 2D drawing
+		
+		glColor3f(0.0, 0.0, 1.0);
 		glVertex3f(0.25, 0.5, 0.0);	// == glVertex2f(0.0, 0.0); in 2D drawing
 
 		glEnd();
