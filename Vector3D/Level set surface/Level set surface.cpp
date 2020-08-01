@@ -42,7 +42,7 @@ int main()
 			if (my_circle.getSignedDistance(x, y) > 0.0f)
 			{
 				// plot
-				of << x << "\t" << y << std::endl;
+				of << x << ",\t\t\t" << y << "," <<std::endl;
 			}
 		}
 	of.close();
