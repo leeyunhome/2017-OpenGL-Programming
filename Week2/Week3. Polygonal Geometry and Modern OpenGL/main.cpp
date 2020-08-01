@@ -1,4 +1,4 @@
-// Week2.cpp : This file contains the 'main' function. Program execution begins and ends there.
+// Week3. Polygonal Geometry and Modern OpenGL.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
 #include <iostream>
@@ -86,9 +86,18 @@ int main()
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
 
+	// Initialize GLEW
+	glewExperimental = true; // Needed for core profile
+	if (glewInit() != GLEW_OK) {
+		fprintf(stderr, "Failed to initialize GLEW\n");
+		getchar();
+		glfwTerminate();
+		return -1;
+	}
+
 	printf("%s\n", glGetString(GL_VERSION));
 
-	glClearColor(255.0/255.0, 153.0/255.0, 51.0/255.0, 1);	// white background
+	glClearColor(255.0 / 255.0, 153.0 / 255.0, 51.0 / 255.0, 1);	// white background
 	// default color for display buffer
 
 	int width, height;
@@ -99,12 +108,21 @@ int main()
 	const float aspect_ratio = (float)width / (float)height; // 1.66, 1.9 TV display
 	glOrtho(-1, 1, -1 / aspect_ratio, 1 / aspect_ratio, -1.0, 1.0);
 
-	Vector3 colors[3] = {
+	Vector3 colors[6] = {
 		Vector3(1.0, 0.0, 0.0),
 		Vector3(0.0, 1.0, 0.0),
 		Vector3(0.0, 0.0, 1.0),
+		Vector3(0.0, 0.0, 1.0),
+		Vector3(0.0, 1.0, 0.0),
+		Vector3(1.0, 0.0, 0.0),
 	};
 
+	// using std::vector
+	/*std::vector<Vector3> colors;
+	colors.reserve(3);
+	colors.push_back(Vector3(1.0, 0.0, 0.0));
+	colors.push_back(Vector3(0.0, 1.0, 0.0));
+	colors.push_back(Vector3(0.0, 0.0, 1.0));*/
 
 	// You are going to study later in Viewing class.
 	//float color[3][3]
@@ -113,62 +131,53 @@ int main()
 	//	{0.0, 1.0, 0.0},	// the color of the second vertex
 	//	{0.0, 0.0, 1.0},	// the color of the third vertex
 	//};
-	float vertex[3][3]
-	{ 
+	float vertex[6][3]
+	{
 					{ 0.0, 0.0, 0.0 },	// first vertex
 					{ 0.5, 0.0, 0.0 },	// second vertex
 					{ 0.25, 0.5, 0.0},	// third vertex
+					{ 0.25, 0.5, 0.0},	// third vertex
+					{ 0.5, 0.0, 0.0},	// third vertex
+					{ 0.5, 0.5, 0.0},	// third vertex
 	};
 
-	int num_vertices = 3;
+	int num_vertices = 6;
+
+	//float* my_array = new float[...];
+
+	GLuint vbo[3];
+	glGenBuffers(3, vbo);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_vertices * sizeof Vector3, colors, GL_STATIC_DRAW);
+	
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 3, vertex, GL_STATIC_DRAW);
+	/*glBindBuffer(GL_ARRAY_BUFFER, vbo[2]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLubyte) * 3, indices, GL_STATIC_DRAW);*/
+
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
 		/* Render here */
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		// TODO: draw here
-		// In this example, we draw only one triangle
-		// this is for massive polygons.
+		glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+		glEnableClientState(GL_COLOR_ARRAY);
+		glColorPointer(3, GL_FLOAT, 0, 0);
 
-		glBegin(GL_TRIANGLE_FAN);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glVertexPointer(3, GL_FLOAT, 0, 0);
 
-		for (int v = 0; v < num_vertices; v++)
-		{
-			//glColor3f(colors[v].x_, colors[v].y_, colors[v].z_);
-			glColor3fv(colors[v].values_);
-			//glColor3fv(&color[v][0]);
-			
-			glVertex3fv(vertex[v]);
-		}
-		//glColor3f(1.0, 0.0, 0.0);
-		////glVertex3f(0.0, 0.0, 0.0);	// == glVertex2f(0.0, 0.0); in 2D drawing
-		//glVertex3fv(first_vertex);
+		/*glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo[2]);
+		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_BYTE, 0);*/
 
-		//glColor3f(0.0, 1.0, 0.0);
-		//glVertex3f(0.5, 0.0, 0.0);	// == glVertex2f(0.0, 0.0); in 2D drawing
-		//
-		//glColor3f(0.0, 0.0, 1.0);
-		//glVertex3f(0.25, 0.5, 0.0);	// == glVertex2f(0.0, 0.0); in 2D drawing
+		glDrawArrays(GL_TRIANGLES, 0, 6 * 3);
+
+		glDisableClientState(GL_COLOR_ARRAY);
+		glDisableClientState(GL_VERTEX_ARRAY);
 		
-		// center of polygonized circle
-		// center vertex
-		//glVertex2f(circle_center_x, circle_center_y);
-
-		//const int num_triangles = 1000;
-		//const float dtheta = 2.0 * 3.141592 / (float)num_triangles;
-		//const float radius = 0.5;
-
-		//float theta = 0.0;
-		//for (int i = 0; i <= num_triangles; i++, theta += dtheta)
-		////for (float theta = 0.0; theta < 2.0 * 3.141592; theta += dtheta)
-		//{
-		//	const float x = radius * cos(theta) + circle_center_x;
-		//	const float y = radius * sin(theta) + circle_center_y;
-		//	glVertex2f(x, y);	// == glVertex2f(0.0, 0.0); in 2D drawing
-
-		//}
-		glEnd();
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
 

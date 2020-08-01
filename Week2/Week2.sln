@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30104.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Week2", "Week2\Week2.vcxproj", "{7D3E5701-AB87-4211-ACC5-2CA91BDF0B22}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Week3. Polygonal Geometry and Modern OpenGL", "Week3. Polygonal Geometry and Modern OpenGL\Week3. Polygonal Geometry and Modern OpenGL.vcxproj", "{A0E84FEB-A7ED-4365-8029-0163BF4B1E8C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{7D3E5701-AB87-4211-ACC5-2CA91BDF0B22}.Release|x64.Build.0 = Release|x64
 		{7D3E5701-AB87-4211-ACC5-2CA91BDF0B22}.Release|x86.ActiveCfg = Release|Win32
 		{7D3E5701-AB87-4211-ACC5-2CA91BDF0B22}.Release|x86.Build.0 = Release|Win32
+		{A0E84FEB-A7ED-4365-8029-0163BF4B1E8C}.Debug|x64.ActiveCfg = Debug|x64
+		{A0E84FEB-A7ED-4365-8029-0163BF4B1E8C}.Debug|x64.Build.0 = Debug|x64
+		{A0E84FEB-A7ED-4365-8029-0163BF4B1E8C}.Debug|x86.ActiveCfg = Debug|Win32
+		{A0E84FEB-A7ED-4365-8029-0163BF4B1E8C}.Debug|x86.Build.0 = Debug|Win32
+		{A0E84FEB-A7ED-4365-8029-0163BF4B1E8C}.Release|x64.ActiveCfg = Release|x64
+		{A0E84FEB-A7ED-4365-8029-0163BF4B1E8C}.Release|x64.Build.0 = Release|x64
+		{A0E84FEB-A7ED-4365-8029-0163BF4B1E8C}.Release|x86.ActiveCfg = Release|Win32
+		{A0E84FEB-A7ED-4365-8029-0163BF4B1E8C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
