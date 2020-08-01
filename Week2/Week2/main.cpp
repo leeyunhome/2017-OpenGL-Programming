@@ -47,6 +47,19 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 	}
 }
 
+class Vector3
+{
+public:
+	union
+	{
+		struct { float x_, y_, z_; };
+		float values_[3];
+	};
+	Vector3(const float _x, const float _y, const float& _z)
+		: x_(_x), y_(_y), z_(_z)
+	{}
+};
+
 int main()
 {
 	GLFWwindow* window = nullptr;
@@ -85,13 +98,20 @@ int main()
 	const float aspect_ratio = (float)width / (float)height; // 1.66, 1.9 TV display
 	glOrtho(-1, 1, -1 / aspect_ratio, 1 / aspect_ratio, -1.0, 1.0);
 
-	// You are going to study later in Viewing class.
-	float color[3][3]
-	{
-		{1.0, 0.0, 0.0},	// the color of the first vertex
-		{0.0, 1.0, 0.0},	// the color of the second vertex
-		{0.0, 0.0, 1.0},	// the color of the third vertex
+	Vector3 colors[3] = {
+		Vector3(1.0, 0.0, 0.0),
+		Vector3(0.0, 1.0, 0.0),
+		Vector3(0.0, 0.0, 1.0),
 	};
+
+
+	// You are going to study later in Viewing class.
+	//float color[3][3]
+	//{
+	//	{1.0, 0.0, 0.0},	// the color of the first vertex
+	//	{0.0, 1.0, 0.0},	// the color of the second vertex
+	//	{0.0, 0.0, 1.0},	// the color of the third vertex
+	//};
 	float vertex[3][3]
 	{ 
 					{ 0.0, 0.0, 0.0 },	// first vertex
@@ -114,8 +134,11 @@ int main()
 
 		for (int v = 0; v < num_vertices; v++)
 		{
-			glColor3f(color[v][0], color[v][1], color[v][2]);
-			glVertex3f(vertex[v][0], vertex[v][1], vertex[v][2]);
+			//glColor3f(colors[v].x_, colors[v].y_, colors[v].z_);
+			glColor3fv(colors[v].values_);
+			//glColor3fv(&color[v][0]);
+			
+			glVertex3fv(vertex[v]);
 		}
 		//glColor3f(1.0, 0.0, 0.0);
 		////glVertex3f(0.0, 0.0, 0.0);	// == glVertex2f(0.0, 0.0); in 2D drawing
