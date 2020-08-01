@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <math.h>
+#include <fstream>
 
 class ImplicitCircle2D
 {
@@ -30,9 +31,21 @@ int main()
 	my_circle.y_center_ = 0.0f;
 	my_circle.radius_ = 1.0f;
 
-	std::cout << my_circle.getSignedDistance(0.0f, 0.0f) << std::endl;
-	std::cout << my_circle.getSignedDistance(1.0f, 0.0f) << std::endl;
-	std::cout << my_circle.getSignedDistance(2.0f, 0.0f) << std::endl;
+	//std::cout << my_circle.getSignedDistance(0.0f, 0.0f) << std::endl;
+	//std::cout << my_circle.getSignedDistance(1.0f, 0.0f) << std::endl;
+	//std::cout << my_circle.getSignedDistance(2.0f, 0.0f) << std::endl;
+	std::ofstream of("implicit_circle_test.txt");
+
+	for (float y = -2.0f; y <= 2.0f; y += 0.1f)
+		for (float x = -2.0f; x <= 2.0f; x += 0.1f)
+		{
+			if (my_circle.getSignedDistance(x, y) > 0.0f)
+			{
+				// plot
+				of << x << "\t" << y << std::endl;
+			}
+		}
+	of.close();
 
 	return 0;
 }
