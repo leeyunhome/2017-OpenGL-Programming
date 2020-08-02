@@ -10,6 +10,7 @@
 #include <chrono>			// std::chrono::seconds
 #include "math.h"
 #include <vector>			// do not use list
+#include <GL/GLU.h>
 
 const int width_window = 640; //*2;
 const int height_window = 480; //*2;
@@ -100,13 +101,15 @@ int main()
 	glClearColor(255.0 / 255.0, 153.0 / 255.0, 51.0 / 255.0, 1);	// white background
 	// default color for display buffer
 
+	gluLookAt(0.6, 0.6, 0.6, 0.5, 0.5, 0.5, 0, 1, 0);
+
 	int width, height;
 	glfwGetFramebufferSize(window, &width, &height);
 	glViewport(0, 0, width, height);
 	// your frame buffer is two dimensional array x-, y-
 	// your frame buffer is three dimensional array x-, y-, d-
 	const float aspect_ratio = (float)width / (float)height; // 1.66, 1.9 TV display
-	glOrtho(-1, 1, -1 / aspect_ratio, 1 / aspect_ratio, -1.0, 1.0);
+	glOrtho(-1, 1, -1 / aspect_ratio, 1 / aspect_ratio, -10.0, 10.0);
 
 	Vector3 colors[4] = {
 		Vector3(1.0, 0.0, 0.0),
@@ -134,7 +137,7 @@ int main()
 					{ 0.0, 0.0, 0.0 },	// first vertex
 					{ 0.5, 0.0, 0.0 },	// second vertex
 					{ 0.25, 0.5, 0.0},	// third vertex
-					{ 0.5, 0.5, 0.0},	// third vertex
+					{ 0.5, 0.5, -0.5},	// third vertex
 	};
 
 	GLubyte indices[] = { 0, 1, 2, 1, 2, 3 };
