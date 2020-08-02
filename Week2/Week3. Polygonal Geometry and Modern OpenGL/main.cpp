@@ -108,13 +108,11 @@ int main()
 	const float aspect_ratio = (float)width / (float)height; // 1.66, 1.9 TV display
 	glOrtho(-1, 1, -1 / aspect_ratio, 1 / aspect_ratio, -1.0, 1.0);
 
-	Vector3 colors[6] = {
+	Vector3 colors[4] = {
 		Vector3(1.0, 0.0, 0.0),
 		Vector3(0.0, 1.0, 0.0),
 		Vector3(0.0, 0.0, 1.0),
 		Vector3(0.0, 0.0, 1.0),
-		Vector3(0.0, 1.0, 0.0),
-		Vector3(1.0, 0.0, 0.0),
 	};
 
 	// using std::vector
@@ -131,15 +129,15 @@ int main()
 	//	{0.0, 1.0, 0.0},	// the color of the second vertex
 	//	{0.0, 0.0, 1.0},	// the color of the third vertex
 	//};
-	float vertex[6][3]
+	float vertex[4][3]
 	{
 					{ 0.0, 0.0, 0.0 },	// first vertex
 					{ 0.5, 0.0, 0.0 },	// second vertex
 					{ 0.25, 0.5, 0.0},	// third vertex
-					{ 0.25, 0.5, 0.0},	// third vertex
-					{ 0.5, 0.0, 0.0},	// third vertex
 					{ 0.5, 0.5, 0.0},	// third vertex
 	};
+
+	GLubyte indices[] = { 0, 1, 2, 1, 2, 3 };
 
 	int num_vertices = 6;
 
@@ -153,8 +151,9 @@ int main()
 	
 	glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 3, vertex, GL_STATIC_DRAW);
-	/*glBindBuffer(GL_ARRAY_BUFFER, vbo[2]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLubyte) * 3, indices, GL_STATIC_DRAW);*/
+	
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[2]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLubyte) * 6, indices, GL_STATIC_DRAW);
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
@@ -170,10 +169,10 @@ int main()
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glVertexPointer(3, GL_FLOAT, 0, 0);
 
-		/*glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo[2]);
-		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_BYTE, 0);*/
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo[2]);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0);
 
-		glDrawArrays(GL_TRIANGLES, 0, 6 * 3);
+		//glDrawArrays(GL_TRIANGLES, 0, 6 * 3);
 
 		glDisableClientState(GL_COLOR_ARRAY);
 		glDisableClientState(GL_VERTEX_ARRAY);
