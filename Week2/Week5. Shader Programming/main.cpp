@@ -109,25 +109,27 @@ const unsigned int indices[num_quads * 4] = {
 	20, 21, 22, 23
 };
 
-//const char* vertex_shader =
-//"#version 330\n"
+const char* vertex_shader =
+"#version 330\n"
 //"uniform mat4 gl_ModelViewMatrix;"
 //"uniform mat4 gl_ProjectionMatrix;"
-//"in vec3 a_pos;"
+"in vec3 a_pos;"
 //"in vec3 a_color;"
 //"out vec4 v_color;"
-//"void main() {"
+"void main() {"
 //"				gl_Position = gl_ModelViewMatrix * gl_ProjectionMatrix * vec4(a_pos, 1.0);"
+"				gl_Position = vec4(a_pos, 1.0);"
 //"				gl_Color = vec4(a_color, 1.0);"
-//			 "}";
-//
-//const char* fragment_shader =
-//"#version 330\n"
+"}";
+
+const char* fragment_shader =
+"#version 330\n"
 //"in vec4 v_color;"
-//"out vec4 frag_colour;"
-//"void main() {"
+"out vec4 frag_colour;"
+"void main() {"
 //"				frag_colour = v_color * 0.5;"
-//"}";
+"				frag_colour = vec4(1.0, 0.0, 0.0, 1.0);"
+"}";
 
 int main(void)
 {
@@ -199,40 +201,44 @@ int main(void)
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
-	std::string vertex_shader, fragment_shader;
+	//std::string vertex_shader;
+	//std::string fragment_shader;
 
-	{std::ifstream inFile;
-	inFile.open("./vertex_shader.glsl");//open the input file
-	std::stringstream strStream;
-	strStream << inFile.rdbuf();//read the file
-	vertex_shader = strStream.str();//str holds the content of the file
-	std::cout << vertex_shader << std::endl;//you can do anything with the string!!!
-	}
+	//{std::ifstream inFile;
+	//inFile.open("./vertex_shader.glsl");//open the input file
+	//std::stringstream strStream;
+	//strStream << inFile.rdbuf();//read the file
+	//vertex_shader = strStream.str();//str holds the content of the file
+	//std::cout << vertex_shader << std::endl;//you can do anything with the string!!!
+	//}
 
-	{std::ifstream inFile;
-	inFile.open("./fragment_shader.glsl");//open the input file
-	std::stringstream strStream;
-	strStream << inFile.rdbuf();//read the file
-	fragment_shader = strStream.str();//str holds the content of the file
-	std::cout << fragment_shader << std::endl;//you can do anything with the string!!!
-	}
+	//{std::ifstream inFile;
+	//inFile.open("./fragment_shader.glsl");//open the input file
+	//std::stringstream strStream;
+	//strStream << inFile.rdbuf();//read the file
+	//fragment_shader = strStream.str();//str holds the content of the file
+	//std::cout << fragment_shader << std::endl;//you can do anything with the string!!!
+	//}
 
 	// initialize shader programs
 	// http://antongerdelan.net/opengl/hellotriangle.html
 	GLuint vs = glCreateShader(GL_VERTEX_SHADER);
-	char const* vertex_source_pointer = vertex_shader.c_str();
-	glShaderSource(vs, 1, &vertex_source_pointer, NULL);
+	//char const* vertex_source_pointer = vertex_shader.c_str();
+	//glShaderSource(vs, 1, &vertex_source_pointer, NULL);
+	glShaderSource(vs, 1, &vertex_shader, NULL);
+
 	glCompileShader(vs);
 	GLuint fs = glCreateShader(GL_FRAGMENT_SHADER);
-	char const* fragment_source_pointer = fragment_shader.c_str();
-	glShaderSource(fs, 1, &fragment_source_pointer, NULL);
+	//char const* fragment_source_pointer = fragment_shader.c_str();
+	//glShaderSource(fs, 1, &fragment_source_pointer, NULL);
+	glShaderSource(fs, 1, &fragment_shader, NULL);
 	glCompileShader(fs);
 
 	GLuint shader_programme = glCreateProgram();
 	glAttachShader(shader_programme, fs);
 	glAttachShader(shader_programme, vs);
 	glBindAttribLocation(shader_programme, 0, "a_pos");
-	glBindAttribLocation(shader_programme, 1, "a_color");
+	//glBindAttribLocation(shader_programme, 1, "a_color");
 	glLinkProgram(shader_programme);
 
 	// Check the link status
@@ -265,6 +271,7 @@ int main(void)
 		//glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // <- depth test
 
+		// We are using built-in shaders (we cann't modify it)
 		glUseProgram(shader_programme);	// activate your shader!
 
 		// draw here
