@@ -25,8 +25,8 @@
 #include "ObjReader.h"
 #include "Vector3.h"
 
-const int width_window = 720;
-const int height_window = 480;
+const int width_window = 640;
+const int height_window = 640;
 
   /*
 class Vector3<float>
@@ -199,10 +199,11 @@ int main(void)
 	glfwGetFramebufferSize(window, &width, &height);
 	glViewport(0, 0, width, height);
 	//glOrtho(-0.2, 1.2, -0.2, 1.2, -10.0, 10.0);
-	glOrtho(-1.2, 1.2, -1.2, 1.2, -10.0, 10.0);
+	glOrtho(-1.2, 1.2, -1.2, 1.2, -100.0, 100.0);
 	//TODO: consider anisotropic view
-	gluLookAt(1.2, 0.8, 1.2, 0.5, 0.5, 0.5, 0, 1, 0);
-	/*glm::vec3 eye(1.2, 0.8, 1.2);
+	//gluLookAt(1.2, 0.8, 1.2, 0.5, 0.5, 0.5, 0, 1, 0);
+	gluLookAt(1.2, 5.8, 1.2, 0.5, 0.5, 0.5, 1, 1, 1);
+	glm::vec3 eye(1.2, 0.8, 1.2);
 	glm::vec3 center(0.5, 0.5, 0.5);
 	glm::vec3 up(0, 1, 0);
 	glm::mat4 m_modelViewMatrix = glm::lookAt(eye, center, up);
@@ -210,7 +211,7 @@ int main(void)
 	
 	glm::mat4 trans = glm::mat4(1.0f);
 	trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
-	trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));*/
+	trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
 	//glLoadIdentity();
 	//gluLookAt(1, 1, 1, 0.5, 0.5, 0.5, 0, 1, 0);
 	//gluLookAt(0, 0, 0, 0.25, 0.25, 0.25, 0, 1, 0);
@@ -221,9 +222,10 @@ int main(void)
 
 	// read 3D model from obj file
 	OBJReader obj_reader;
+	//obj_reader.readObj("./20131208_VenusDeMilo_Full_Scale_captured_by_Cosmo_Wenman.obj");
 	obj_reader.readObj("./IronMan_Full_smooth.obj");
-	//obj_reader.readObj("./IronMan_Full_smooth.obj");
 	//obj_reader.dump();
+	obj_reader.scaleToUnitBox();
 
 	const std::vector <Vector3<float>>& vertices = obj_reader.pos_stack_;
 	const std::vector <Vector3<unsigned int>>& indices = obj_reader.ix_stack_;

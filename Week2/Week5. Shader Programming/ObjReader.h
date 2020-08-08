@@ -131,6 +131,83 @@ public:
 		//TODO: scale down the BB to a unit cube		
 	}
 
+	void scaleToUnitBox()
+	{
+		using namespace std;
+		const float fmin = std::numeric_limits<float>::min();
+		const float fmax = std::numeric_limits<float>::max();
+		// BB
+		Vector3<float> bb_max(fmin, fmin, fmin);
+		Vector3<float> bb_min(fmax, fmax, fmax);
+
+		for (int i = 0; i < pos_stack_.size(); i++)
+		{
+			const Vector3<float>& vp = pos_stack_[i];
+
+			bb_max.x_ = std::max(vp.x_, bb_max.x_);
+			bb_max.y_ = std::max(vp.y_, bb_max.y_);
+			bb_max.z_ = std::max(vp.z_, bb_max.z_);
+			
+			bb_min.x_ = std::min(vp.x_, bb_min.x_);
+			bb_min.y_ = std::min(vp.y_, bb_min.y_);
+			bb_min.z_ = std::min(vp.z_, bb_min.z_);
+		}
+
+		bb_min.print();
+		cout << " ";
+		bb_max.print();
+
+		// move min corner of BB to the origin
+		for (int i = 0; i < pos_stack_.size(); i++)
+		{
+			Vector3<float>& vp = pos_stack_[i];
+
+			vp.x_ -= bb_min.x_;
+			vp.y_ -= bb_min.y_;
+			vp.z_ -= bb_min.z_;
+		}
+
+		const float dx = bb_max.x_ - bb_min.x_;
+		const float dy = bb_max.y_ - bb_min.y_;
+		const float dz = bb_max.z_ - bb_min.z_;
+
+		const float dm = max(max(dx, dy), dz);
+		const double inv_dm = 1.0 / (double)dm;
+
+		// scale the longest edge to unit (1) length
+		for (int i = 0; i < pos_stack_.size(); i++)
+		{
+			Vector3<float>& vp = pos_stack_[i];
+
+			vp.x_ *= inv_dm;
+			vp.y_ *= inv_dm;
+			vp.z_ *= inv_dm;
+		}
+
+		// check bb one more time (just for curiosity)
+		{
+			Vector3<float> bb_max(fmin, fmin, fmin);
+			Vector3<float> bb_min(fmax, fmax, fmax);
+
+			for (int i = 0; i < pos_stack_.size(); i++)
+			{
+				const Vector3<float>& vp = pos_stack_[i];
+
+				bb_max.x_ = std::max(vp.x_, bb_max.x_);
+				bb_max.y_ = std::max(vp.y_, bb_max.y_);
+				bb_max.z_ = std::max(vp.z_, bb_max.z_);
+
+				bb_min.x_ = std::max(vp.x_, bb_min.x_);
+				bb_min.y_ = std::max(vp.y_, bb_min.y_);
+				bb_min.z_ = std::max(vp.z_, bb_min.z_);
+			}
+
+			bb_min.print();
+			cout << " ";
+			bb_max.print();
+		}
+		
+	}
 	void dump()
 	{
 		for (int i = 0; i < pos_stack_.size(); i++)
