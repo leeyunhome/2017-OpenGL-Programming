@@ -14,6 +14,13 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <glm/vec3.hpp>
+#include <glm/geometric.hpp>
+#include <glm/mat4x4.hpp>
+#include <glm/glm.hpp>
+#include <glm/trigonometric.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 const int width_window = 640;
 const int height_window = 640;
@@ -109,30 +116,37 @@ const unsigned int indices[num_quads * 4] = {
 	20, 21, 22, 23
 };
 
-const char* vertex_shader =
-"#version 330\n"
-//"uniform mat4 gl_ModelViewMatrix;"
-//"uniform mat4 gl_ProjectionMatrix;"
-"in vec3 a_pos;"
-//"in vec3 a_color;"
-//"out vec4 v_color;"
-"void main() {"
-//"				gl_Position = gl_ModelViewMatrix * gl_ProjectionMatrix * vec4(a_pos, 1.0);"
-"				gl_Position = vec4(a_pos, 1.0);"
-//"				gl_Color = vec4(a_color, 1.0);"
-"}";
+std::string readFromTxt(const char* filename)
+{
+	using namespace std;
+	ifstream inFile;
+	inFile.open(filename);	// open the input file
 
-const char* fragment_shader =
-"#version 330\n"
-//"in vec4 v_color;"
-"out vec4 frag_colour;"
-"void main() {"
-//"				frag_colour = v_color * 0.5;"
-"				frag_colour = vec4(1.0, 0.0, 0.0, 1.0);"
-"}";
+	stringstream strStream;
+	strStream << inFile.rdbuf();	// read the file
+	string str = strStream.str();	// str holds the content
+
+	//cout << str << endl;// you can do anything with the string!!!
+
+	return str;
+}
 
 int main(void)
 {
+	std::string vertex_shader = 
+		readFromTxt("vertex_shader.glsl");
+
+	//std::cout << vertex_shader << std::endl;
+
+	std::string fragment_shader =
+		readFromTxt("fragment_shader.glsl");
+
+	//std::cout << fragment_shader << std::endl;
+
+	/*std::this_thread::sleep_for(std::chrono::milliseconds(10000));
+
+	exit(1);*/
+
 	GLFWwindow* window = nullptr;
 
 	/* Initialize the library */
@@ -179,6 +193,11 @@ int main(void)
 	glOrtho(-1.2, 1.2, -1.2, 1.2, -10.0, 10.0);
 	//TODO: consider anisotropic view
 	gluLookAt(1.2, 0.8, 1.2, 0.5, 0.5, 0.5, 0, 1, 0);
+	glm::vec3 eye(1.2, 0.8, 1.2);
+	glm::vec3 center(0.5, 0.5, 0.5);
+	glm::vec3 up(0, 1, 0);
+	glm::mat4 m_modelViewMatrix = glm::lookAt(eye, center, up);
+	glm::mat4 m_projectionMatrix = glm::perspective(1.0, 1.333, -10.0, 10.0);
 	//glLoadIdentity();
 	//gluLookAt(1, 1, 1, 0.5, 0.5, 0.5, 0, 1, 0);
 	//gluLookAt(0, 0, 0, 0.25, 0.25, 0.25, 0, 1, 0);
@@ -223,15 +242,15 @@ int main(void)
 	// initialize shader programs
 	// http://antongerdelan.net/opengl/hellotriangle.html
 	GLuint vs = glCreateShader(GL_VERTEX_SHADER);
-	//char const* vertex_source_pointer = vertex_shader.c_str();
-	//glShaderSource(vs, 1, &vertex_source_pointer, NULL);
-	glShaderSource(vs, 1, &vertex_shader, NULL);
+	char const* vertex_source_pointer = vertex_shader.c_str();
+	glShaderSource(vs, 1, &vertex_source_pointer, NULL);
+	//glShaderSource(vs, 1, &vertex_shader, NULL);
 
 	glCompileShader(vs);
 	GLuint fs = glCreateShader(GL_FRAGMENT_SHADER);
-	//char const* fragment_source_pointer = fragment_shader.c_str();
-	//glShaderSource(fs, 1, &fragment_source_pointer, NULL);
-	glShaderSource(fs, 1, &fragment_shader, NULL);
+	char const* fragment_source_pointer = fragment_shader.c_str();
+	glShaderSource(fs, 1, &fragment_source_pointer, NULL);
+	//glShaderSource(fs, 1, &fragment_shader, NULL);
 	glCompileShader(fs);
 
 	GLuint shader_programme = glCreateProgram();
@@ -280,24 +299,24 @@ int main(void)
 		glVertexAttribPointer
 		(
 			0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-			3,                  // size (r, g, b)
+			3,                  // size (r, y, z)
 			GL_FLOAT,           // type
 			GL_FALSE,           // normalized?
 			0,                  // stride
 			(void*)0            // array buffer offset
 		);
 
-		glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer
-		(
-			1,                  // attribute 1. Must match the layout in the shader.
-			3,                  // size (x, y, z)
-			GL_FLOAT,           // type
-			GL_FALSE,           // normalized?
-			0,                  // stride
-			(void*)0            // array buffer offset
-		);
+		//glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+		//glEnableVertexAttribArray(1);
+		//glVertexAttribPointer
+		//(
+		//	1,                  // attribute 1. Must match the layout in the shader.
+		//	3,                  // size (x, y, z)
+		//	GL_FLOAT,           // type
+		//	GL_FALSE,           // normalized?
+		//	0,                  // stride
+		//	(void*)0            // array buffer offset
+		//);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo[2]);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
