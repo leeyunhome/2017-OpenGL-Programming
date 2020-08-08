@@ -22,11 +22,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 //#include <glad/glad.h>
+#include "ObjReader.h"
+#include "Vector3.h"
 
 const int width_window = 720;
 const int height_window = 480;
 
-class Vector3
+  /*
+class Vector3<float>
 {
 public:
 	union {
@@ -34,78 +37,78 @@ public:
 		float v_[3];
 	};
 
-	Vector3(const float& _x, const float& _y, const float& _z)
+	Vector3<float>(const float& _x, const float& _y, const float& _z)
 		: x_(_x), y_(_y), z_(_z)
 	{}
-};
-
+};*/
+  /*
 const int num_vertices = 24;
 const int num_quads = 6;
 
-const Vector3 colors[num_vertices] =
+const Vector3<float> colors[num_vertices] =
 {
-	Vector3(0, 0, 0.8),
-	Vector3(0, 0, 0.8),
-	Vector3(0, 0, 0.8),
-	Vector3(0, 0, 0.8),
+	Vector3<float>(0, 0, 0.8),
+	Vector3<float>(0, 0, 0.8),
+	Vector3<float>(0, 0, 0.8),
+	Vector3<float>(0, 0, 0.8),
 
-	Vector3(1, 0, 0),
-	Vector3(1, 0, 0),
-	Vector3(1, 0, 0),
-	Vector3(1, 0, 0),
+	Vector3<float>(1, 0, 0),
+	Vector3<float>(1, 0, 0),
+	Vector3<float>(1, 0, 0),
+	Vector3<float>(1, 0, 0),
 
-	Vector3(0, 1, 0),
-	Vector3(0, 1, 0),
-	Vector3(0, 1, 0),
-	Vector3(0, 1, 0),
+	Vector3<float>(0, 1, 0),
+	Vector3<float>(0, 1, 0),
+	Vector3<float>(0, 1, 0),
+	Vector3<float>(0, 1, 0),
 
-	Vector3(1, 1, 0),
-	Vector3(1, 1, 0),
-	Vector3(1, 1, 0),
-	Vector3(1, 1, 0),
+	Vector3<float>(1, 1, 0),
+	Vector3<float>(1, 1, 0),
+	Vector3<float>(1, 1, 0),
+	Vector3<float>(1, 1, 0),
 
-	Vector3(0.2, 0.2, 1),
-	Vector3(0.2, 0.2, 1),
-	Vector3(0.2, 0.2, 1),
-	Vector3(0.2, 0.2, 1),
+	Vector3<float>(0.2, 0.2, 1),
+	Vector3<float>(0.2, 0.2, 1),
+	Vector3<float>(0.2, 0.2, 1),
+	Vector3<float>(0.2, 0.2, 1),
 
-	Vector3(1, 0, 1),
-	Vector3(1, 0, 1),
-	Vector3(1, 0, 1),
-	Vector3(1, 0, 1)
+	Vector3<float>(1, 0, 1),
+	Vector3<float>(1, 0, 1),
+	Vector3<float>(1, 0, 1),
+	Vector3<float>(1, 0, 1)
 };
 
-Vector3 positions[num_vertices] =
+Vector3<float> positions[num_vertices] =
 {
-	Vector3(0.0, 0.0, 0.5),
-	Vector3(0.5, 0.0, 0.5),
-	Vector3(0.5, 0.0, 0.0),
-	Vector3(0.0, 0.0, 0.0),
+	Vector3<float>(0.0, 0.0, 0.5),
+	Vector3<float>(0.5, 0.0, 0.5),
+	Vector3<float>(0.5, 0.0, 0.0),
+	Vector3<float>(0.0, 0.0, 0.0),
 
-	Vector3(0.0, 0.0, 0.5),
-	Vector3(0.5, 0.0, 0.5),
-	Vector3(0.5, 0.5, 0.5),
-	Vector3(0.0, 0.5, 0.5),
+	Vector3<float>(0.0, 0.0, 0.5),
+	Vector3<float>(0.5, 0.0, 0.5),
+	Vector3<float>(0.5, 0.5, 0.5),
+	Vector3<float>(0.0, 0.5, 0.5),
 
-	Vector3(0.5, 0.0, 0.5),
-	Vector3(0.5, 0.0, 0.0),
-	Vector3(0.5, 0.5, 0.0),
-	Vector3(0.5, 0.5, 0.5),
+	Vector3<float>(0.5, 0.0, 0.5),
+	Vector3<float>(0.5, 0.0, 0.0),
+	Vector3<float>(0.5, 0.5, 0.0),
+	Vector3<float>(0.5, 0.5, 0.5),
 
-	Vector3(0.0, 0.0, 0.5),
-	Vector3(0.0, 0.0, 0.0),
-	Vector3(0.0, 0.5, 0.0),
-	Vector3(0.0, 0.5, 0.5),
+	Vector3<float>(0.0, 0.0, 0.5),
+	Vector3<float>(0.0, 0.0, 0.0),
+	Vector3<float>(0.0, 0.5, 0.0),
+	Vector3<float>(0.0, 0.5, 0.5),
 
-	Vector3(0.0, 0.0, 0.0),
-	Vector3(0.5, 0.0, 0.0),
-	Vector3(0.5, 0.5, 0.0),
-	Vector3(0.0, 0.5, 0.0),
+	Vector3<float>(0.0, 0.0, 0.0),
+	Vector3<float>(0.5, 0.0, 0.0),
+	Vector3<float>(0.5, 0.5, 0.0),
+	Vector3<float>(0.0, 0.5, 0.0),
 
-	Vector3(0.0, 0.5, 0.5),
-	Vector3(0.5, 0.5, 0.5),
-	Vector3(0.5, 0.5, 0.0),
-	Vector3(0.0, 0.5, 0.0)
+	Vector3<float>(0.0, 0.5, 0.5),
+	Vector3<float>(0.5, 0.5, 0.5),
+	Vector3<float>(0.5, 0.5, 0.0),
+	Vector3<float>(0.0, 0.5, 0.0)
 };
 
 const unsigned int indices[num_quads * 4] = {
@@ -115,7 +118,7 @@ const unsigned int indices[num_quads * 4] = {
 	12, 13, 14, 15,
 	16, 17, 18, 19,
 	20, 21, 22, 23
-};
+};*/
 
 std::string readFromTxt(const char* filename)
 {
@@ -203,7 +206,11 @@ int main(void)
 	glm::vec3 center(0.5, 0.5, 0.5);
 	glm::vec3 up(0, 1, 0);
 	glm::mat4 m_modelViewMatrix = glm::lookAt(eye, center, up);
-	glm::mat4 m_projectionMatrix = glm::perspective(1.0, 1.333, -10.0, 10.0);*/
+	glm::mat4 m_projectionMatrix = glm::perspective(2.0f, (float)width / (float)height, 0.1f, 1000.0f);
+	
+	glm::mat4 trans = glm::mat4(1.0f);
+	trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+	trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));*/
 	//glLoadIdentity();
 	//gluLookAt(1, 1, 1, 0.5, 0.5, 0.5, 0, 1, 0);
 	//gluLookAt(0, 0, 0, 0.25, 0.25, 0.25, 0, 1, 0);
@@ -212,15 +219,31 @@ int main(void)
 	//glGenVertexArrays(1, &VertexArrayID);
 	//glBindVertexArray(VertexArrayID);
 
+	// read 3D model from obj file
+	OBJReader obj_reader;
+	obj_reader.readObj("./IronMan_Full_smooth.obj");
+	//obj_reader.readObj("./IronMan_Full_smooth.obj");
+	//obj_reader.dump();
+
+	const std::vector <Vector3<float>>& vertices = obj_reader.pos_stack_;
+	const std::vector <Vector3<unsigned int>>& indices = obj_reader.ix_stack_;
+
 	// from last week
 	GLuint vbo[3];
 	glGenBuffers(3, vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Vector3<float>) * vertices.size(), 
+				 &vertices[0], GL_STATIC_DRAW);
+
 	glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Vector3<float>) * vertices.size(), 
+				 &vertices[0], GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo[2]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Vector3<unsigned int>) * indices.size(), 
+				 &indices[0], GL_STATIC_DRAW);
 
 	// depth test
 	glEnable(GL_DEPTH_TEST);
@@ -297,29 +320,37 @@ int main(void)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // <- depth test
 
 		// We are using built-in shaders (we cann't modify it)
-		glUseProgram(shader_programme);	// activate your shader!
+		//glUseProgram(shader_programme);	// activate your shader!
 
-		GLint loc = glGetUniformLocation(shader_programme, "Scale");
-		if (loc != -1)
-		{
-			static float scale = 0.0;
-			scale += 0.3f;
+		//GLint loc = glGetUniformLocation(shader_programme, "Scale");
+		//if (loc != -1)
+		//{
+		//	static float scale = 0.0;
+		//	scale += 0.3f;
 
-			glUniform1f(loc, sin(scale));
-		}
+		//	glUniform1f(loc, sin(scale));
+		//}
+		/*unsigned int transformLoc = glGetUniformLocation(shader_programme, "transform");
+		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+
+		unsigned int m_modelViewMatrixLoc = glGetUniformLocation(shader_programme, "transform");
+		glUniformMatrix4fv(m_modelViewMatrixLoc, 1, GL_FALSE, glm::value_ptr(m_modelViewMatrix));
+		
+		unsigned int m_projectionMatrixLoc = glGetUniformLocation(shader_programme, "transform");
+		glUniformMatrix4fv(m_projectionMatrixLoc, 1, GL_FALSE, glm::value_ptr(m_projectionMatrix));*/
 
 		// draw here
-		glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer
-		(
-			0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-			3,                  // size (r, y, z)
-			GL_FLOAT,           // type
-			GL_FALSE,           // normalized?
-			0,                  // stride
-			(void*)0            // array buffer offset
-		);
+		//glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+		//glEnableVertexAttribArray(0);
+		//glVertexAttribPointer
+		//(
+		//	0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+		//	3,                  // size (r, y, z)
+		//	GL_FLOAT,           // type
+		//	GL_FALSE,           // normalized?
+		//	0,                  // stride
+		//	(void*)0            // array buffer offset
+		//);
 
 		//glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
 		//glEnableVertexAttribArray(1);
@@ -333,12 +364,20 @@ int main(void)
 		//	(void*)0            // array buffer offset
 		//);
 
+		glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glVertexPointer(3, GL_FLOAT, 0, 0);	// Vector3
+
+		glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+		glEnableClientState(GL_COLOR_ARRAY);
+		glColorPointer(3, GL_FLOAT, 0, 0);
+
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo[2]);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		glDrawElements(GL_QUADS, num_quads * 4, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, indices.size() * 3, GL_UNSIGNED_INT, 0);
 
-		//glDisableClientState(GL_COLOR_ARRAY);
-		//glDisableClientState(GL_VERTEX_ARRAY);
+		glDisableClientState(GL_COLOR_ARRAY);
+		glDisableClientState(GL_VERTEX_ARRAY);
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
