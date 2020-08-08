@@ -21,9 +21,10 @@
 #include <glm/trigonometric.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+//#include <glad/glad.h>
 
-const int width_window = 640;
-const int height_window = 640;
+const int width_window = 720;
+const int height_window = 480;
 
 class Vector3
 {
@@ -181,6 +182,11 @@ int main(void)
 		glfwTerminate();
 		return -1;
 	}
+	//if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	//{
+	//	std::cout << "Failed to initialize GLAD" << std::endl;
+	//	return -1;
+	//}
 
 	glClearColor(1, 1, 1, 1); // while background
 
@@ -193,11 +199,11 @@ int main(void)
 	glOrtho(-1.2, 1.2, -1.2, 1.2, -10.0, 10.0);
 	//TODO: consider anisotropic view
 	gluLookAt(1.2, 0.8, 1.2, 0.5, 0.5, 0.5, 0, 1, 0);
-	glm::vec3 eye(1.2, 0.8, 1.2);
+	/*glm::vec3 eye(1.2, 0.8, 1.2);
 	glm::vec3 center(0.5, 0.5, 0.5);
 	glm::vec3 up(0, 1, 0);
 	glm::mat4 m_modelViewMatrix = glm::lookAt(eye, center, up);
-	glm::mat4 m_projectionMatrix = glm::perspective(1.0, 1.333, -10.0, 10.0);
+	glm::mat4 m_projectionMatrix = glm::perspective(1.0, 1.333, -10.0, 10.0);*/
 	//glLoadIdentity();
 	//gluLookAt(1, 1, 1, 0.5, 0.5, 0.5, 0, 1, 0);
 	//gluLookAt(0, 0, 0, 0.25, 0.25, 0.25, 0, 1, 0);
@@ -292,6 +298,15 @@ int main(void)
 
 		// We are using built-in shaders (we cann't modify it)
 		glUseProgram(shader_programme);	// activate your shader!
+
+		GLint loc = glGetUniformLocation(shader_programme, "Scale");
+		if (loc != -1)
+		{
+			static float scale = 0.0;
+			scale += 0.3f;
+
+			glUniform1f(loc, sin(scale));
+		}
 
 		// draw here
 		glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
