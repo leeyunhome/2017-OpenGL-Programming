@@ -125,6 +125,7 @@ int main(void)
 	// read 3D model from obj file
 	OBJReader obj_reader;
 	obj_reader.readObj("torus.obj");
+	//obj_reader.readObj("IronMan_Full_smooth.obj");
 	//obj_reader.readObj("../../test-result-sphere_f80.obj");
 	//obj_reader.dump();
 
@@ -137,8 +138,10 @@ int main(void)
 				&obj_reader.pos_stack_[0], GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
-	glBufferData(GL_ARRAY_BUFFER, obj_reader.pos_stack_.size() * sizeof(float) * 3,
-				&obj_reader.pos_stack_[0], GL_STATIC_DRAW);
+	/*glBufferData(GL_ARRAY_BUFFER, obj_reader.pos_stack_.size() * sizeof(float) * 3,
+				&obj_reader.pos_stack_[0], GL_STATIC_DRAW);*/
+	glBufferData(GL_ARRAY_BUFFER, obj_reader.nor_stack_.size() * sizeof(float) * 3,
+				&obj_reader.nor_stack_[0], GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo[2]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, obj_reader.ix_stack_.size()* sizeof(unsigned int)*3, 
@@ -148,30 +151,30 @@ int main(void)
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 	
-	//glEnable(GL_LIGHTING);
-	//glEnable(GL_LIGHT0);
-	//glEnable(GL_NORMALIZE);
-	//glShadeModel(GL_SMOOTH);
-	//glDisable(GL_COLOR_MATERIAL);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0); // GL_LIGHT0, 1, 2, ..7
+	glEnable(GL_NORMALIZE);
+	glShadeModel(GL_SMOOTH);
+	glDisable(GL_COLOR_MATERIAL);
 
-	//GLfloat ambientLight[] = { 0.1, 0.1, 0.1, 1.0f };
-	//GLfloat lightColor[] = { 100.0f, 100.0f, 100.0f, 1.0f };
-	//GLfloat lightPos[] = { 0.0, 0.3, 0.0, 1};
+	GLfloat ambientLight[] = { 0.1, 0.1, 0.1, 1.0f };
+	GLfloat lightColor[] = { 10.0f, 10.0f, 10.0f, 1.0f };
+	GLfloat lightPos[] = { 0.0, 0.3, 0.0, 1.0};
 
-	//glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
-	//glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);
-	//glLightfv(GL_LIGHT0, GL_SPECULAR, lightColor);
-	//glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, lightColor);
+	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
 
-	//GLfloat materialColor[] = { 1.0f, 0.1f, 0.1f, 1.0f };
-	//GLfloat materialSpecular[] = { 0.2, 0.2, 0.2, 1.0 };
-	//GLfloat materialEmission[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-	//GLfloat shininess = 5;
+	GLfloat materialColor[] = { 1.0f, 0.1f, 0.1f, 1.0f };
+	GLfloat materialSpecular[] = { 0.2, 0.2, 0.2, 1.0 };
+	GLfloat materialEmission[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	GLfloat shininess = 5;
 
-	//glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, materialColor);
-	//glMaterialfv(GL_FRONT, GL_SPECULAR, materialSpecular);
-	//glMaterialfv(GL_FRONT, GL_EMISSION, materialEmission);
-	//glMaterialf(GL_FRONT, GL_SHININESS, shininess);
+	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, materialColor);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, materialSpecular);
+	glMaterialfv(GL_FRONT, GL_EMISSION, materialEmission);
+	glMaterialf(GL_FRONT, GL_SHININESS, shininess);
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
@@ -190,8 +193,10 @@ int main(void)
 		glVertexPointer(3, GL_FLOAT, 0, 0);
 
 		glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
-		glEnableClientState(GL_COLOR_ARRAY);
-		glColorPointer(3, GL_FLOAT, 0, 0);
+		//glEnableClientState(GL_COLOR_ARRAY);
+		glEnableClientState(GL_NORMAL_ARRAY);
+		//glColorPointer(3, GL_FLOAT, 0, 0);
+		glNormalPointer(GL_FLOAT, 0, 0);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo[2]);
 		glPolygonMode(GL_FRONT, GL_FILL);

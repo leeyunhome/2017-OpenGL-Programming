@@ -17,6 +17,7 @@ class OBJReader
 public:
 	std::vector<glm::vec3 > pos_stack_;
 	std::vector<glm::tvec3<unsigned int> > ix_stack_;
+	std::vector<glm::vec3> nor_stack_;
 	//Note: vector push_back is slow
 	//Note: use unsigned int for indices
 
@@ -82,6 +83,10 @@ public:
 
 				float nx, ny, nz;
 				file >> nx >> ny >> nz;
+
+				//std::cout << nx << " " << ny << " " << nz << std::endl;
+
+				nor_stack_.push_back(glm::vec3(nx, ny, nz));
 			}
 			else if (strcmp(c, "f") == 0)
 			{
@@ -185,23 +190,66 @@ public:
 
 	void recalculateNormalVector()
 	{
+		using namespace std;
+		using namespace glm;
 		// 1. calculate face normals
 
 		// prepare for a temporary memory
+		vector<vec3> face_normals;
+		face_normals.resize(ix_stack_.size());
 
 		// use cross product to calculate face normals
+		for (int fix = 0; fix < ix_stack_.size(); fix++)
+		{
+			const unsigned int &ix_v0 = ix_stack_[fix].x;
+			const unsigned int &ix_v1 = ix_stack_[fix].y;
+			const unsigned int &ix_v2 = ix_stack_[fix].z;
+			const vec3 &v0 = pos_stack_[ix_v0];
+			const vec3 &v1 = pos_stack_[ix_v1];
+			const vec3 &v2 = pos_stack_[ix_v2];
 
+			// two vectors on the triangular surface (plane)
+			const vec3 &l0 = v1 - v0;
+			const vec3 &l1 = v2 - v0;
+
+			// a normal vector that is normal (90 degree angle) to 10 and
+			// -> this vector is normal to this triangle
+			const vec3 face_normal = glm::cross(l0, l1);
+			face_normals[fix] = face_normal;
+		}
 
 		// 2. find vertex normals
 
 		// prepare for memory to store normal vectors
-
+		nor_stack_.resize(pos_stack_.size());
 
 		// make normal vectors zeros
+		for (int vix = 0; vix < nor_stack_.size(); ++vix)
+			nor_stack_[vix] = vec3(0.0f, 0.0f, 0.0f);
 
 		// accumulate face normals
+		for (int fix = 0; fix < ix_stack_.size(); fix++)
+		{
+			const unsigned int ix_v0 = ix_stack_[fix].x;
+			const unsigned int ix_v1 = ix_stack_[fix].y;
+			const unsigned int ix_v2 = ix_stack_[fix].z;
+
+			const vec3 face_normal = face_normals[fix];
+
+			nor_stack_[ix_v0] += face_normal;
+			nor_stack_[ix_v1] += face_normal;
+			nor_stack_[ix_v2] += face_normal;
+		}
 
 		// normalize vertex normals for smooth average face normals
+		for (int vix = 0; vix < nor_stack_.size(); ++vix)
+		{
+			nor_stack_[vix] = glm::normalize(nor_stack_[vix]);
+			// normalize means make the length of the vector to be ONE
+			// nor_stack_[vix] /= num_of_adjacent_faces
+			// if you use glEnable(GL_NORMALIZE), 
+			// API normalized normal vector as you did in this code
+		}
 
 	}
 };
